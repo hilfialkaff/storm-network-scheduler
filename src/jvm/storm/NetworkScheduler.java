@@ -1,4 +1,4 @@
-package storm;
+package jvm.storm;
 
 import java.util.Collection;
 import java.util.List;
@@ -45,15 +45,18 @@ public class NetworkScheduler implements IScheduler {
             boolean needsScheduling = cluster.needsScheduling(topology);
 
             if (!needsScheduling) {
-            	System.out.println("Our special topology DOES NOT NEED scheduling.");
+                // System.out.println("Our special topology DOES NOT NEED scheduling.");
             } else {
             	System.out.println("Our special topology needs scheduling.");
                 // find out all the needs-scheduling components of this topology
-                Map<String, List<ExecutorDetails>> componentToExecutors = cluster.getNeedsSchedulingComponentToExecutors(topology);
+                Map<String, List<ExecutorDetails>> componentToExecutors =
+                        cluster.getNeedsSchedulingComponentToExecutors(topology);
 
                 System.out.println("needs scheduling(component->executor): " + componentToExecutors);
-                System.out.println("needs scheduling(executor->compoenents): " + cluster.getNeedsSchedulingExecutorToComponents(topology));
-                SchedulerAssignment currentAssignment = cluster.getAssignmentById(topologies.getByName("special-topology").getId());
+                System.out.println("needs scheduling(executor->compoenents): " +
+                        cluster.getNeedsSchedulingExecutorToComponents(topology));
+                SchedulerAssignment currentAssignment = cluster.getAssignmentById(
+                        topologies.getByName("special-topology").getId());
                 if (currentAssignment != null) {
                 	System.out.println("current assignments: " + currentAssignment.getExecutorToSlot());
                 } else {
@@ -71,7 +74,7 @@ public class NetworkScheduler implements IScheduler {
                     SupervisorDetails specialSupervisor = null;
                     for (SupervisorDetails supervisor : supervisors) {
                         Map meta = (Map) supervisor.getSchedulerMeta();
-
+                        System.out.println("Supervisor name:" + meta.get("name"));
                         if (meta.get("name").equals("special-supervisor")) {
                             specialSupervisor = supervisor;
                             break;
